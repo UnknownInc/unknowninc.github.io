@@ -111,7 +111,7 @@
       var progressBarFull = document.querySelector("#unity-progress-bar-full");
       var fullscreenButton = document.querySelector("#unity-fullscreen-button");
       var mobileWarning = document.querySelector("#unity-mobile-warning");
-
+      var isMobile=false;
       // By default Unity keeps WebGL canvas render target size matched with
       // the DOM size of the canvas element (scaled by window.devicePixelRatio)
       // Set this to false if you want to decouple this synchronization from
@@ -120,6 +120,7 @@
       // config.matchWebGLToCanvasSize = false;
 
       if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+        isMobile=true;
         container.className = "unity-mobile";
         // Avoid draining fillrate performance on mobile devices,
         // and default/override low DPI mode on mobile browsers.
@@ -129,8 +130,6 @@
           mobileWarning.style.display = "none";
         }, 5000);
         rotate();
-        //screen.orientation.lock("landscape");
-        canvas.requestFullscreen();
       } else {
         canvas.style.width = "960px";
         canvas.style.height = "540px";
@@ -147,6 +146,9 @@
           fullscreenButton.onclick = () => {
             unityInstance.SetFullscreen(1);
           };
+          if (isMobile) {
+            unityInstance.SetFullscreen(1);
+          }
         }).catch((message) => {
           alert(message);
         });
