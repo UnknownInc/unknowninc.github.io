@@ -74,6 +74,25 @@
       </div>
     </div>
     <script>
+      async function rotate() {
+        try {
+          await screen.orientation.lock("landscape");
+          //start();
+        } catch (err) {
+          console.error(err);
+        }
+        const matchLandscape = matchMedia("(orientation: landscape)");
+        if (matchLandscape.matches) return start();
+        addEventListener("orientationchange", function listener() {
+          matchLandscape.addListener(function mediaChange(e) {
+            if (!e.matches) return;
+            removeEventListener("orientationchange", listener);
+            matchLandscape.removeListener(mediaChange);
+            //start();
+          });
+        });
+        alert("To start, please rotate your screen to landscape.");
+      }
       var buildUrl = "buttersmash/Build";
       var loaderUrl = buildUrl + "/buttersmash.loader.js";
       var config = {
@@ -109,9 +128,9 @@
         setTimeout(() => {
           mobileWarning.style.display = "none";
         }, 5000);
-
-        document.body.requestFullscreen();
-        screen.orientation.lock("landscape");
+        rotate();
+        //screen.orientation.lock("landscape");
+        //document.body.requestFullscreen();
       } else {
         canvas.style.width = "960px";
         canvas.style.height = "540px";
