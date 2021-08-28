@@ -109,6 +109,8 @@
         setTimeout(() => {
           mobileWarning.style.display = "none";
         }, 5000);
+        await document.body.requestFullscreen();
+        await screen.orientation.lock("landscape");
       } else {
         canvas.style.width = "960px";
         canvas.style.height = "540px";
